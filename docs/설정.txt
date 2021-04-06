@@ -1,0 +1,74 @@
+mysite01 장고 프로젝트 만들기
+
+1. Django library 설치 (터미널)
+(venv) $ pip install django
+
+
+2. Mysqlclient library 설치
+(venv) $ pip install mysqlclient
+
+
+3. 장고 프로젝트 생성
+(venv) $ django-admin startproject django_practices
+
+
+4. directory 정리(pycharm 프로젝트랑 장고 프로젝트를 일치시키기)
+
+5. 초기 설정(settings.py)
+    1) time zone 설정
+        TIME_ZONE = 'Asia/Seoul'
+        DATETIME_FORMAT = "Y-m-d P"
+        USE_L10N = False
+        USE_TZ = False
+
+    2) database 설정
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.mysql',
+                'NAME': 'webdb',
+                'USER': 'webdb',
+                'PASSWORD': 'webdb',
+                'HOST': 'localhost',
+                'PORT': 3306
+            }
+        }
+
+6. admin 애플리케이션 삭제하기(settings.py, urls.py)
+1) INSTALLED_APPS = [ ... ] 에서 'django.contrib.admin' 삭제
+2) urlpatterns = []에서 'admin/' 매핑 삭제
+
+7. ORM 적용 후 mysql5.1x 인 경우 manage.py 수정
+from django.db.backends.mysql.base import DatabaseWrapper
+DatabaseWrapper.data_types['DateTimeField'] = 'datetime'
+
+8. Application들의 통합 template 디렉토리 templates 만들기
+    1) 디렉토리 생성
+        mysite01
+            |--- templates
+
+    2) templates 디렉토리 설정 (settings.py 에 DIRS 추가)
+        import os
+
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+
+
+10. python manage.py startapp main
+
+11. CSS 적용 (static 파일: css, js, images) (settings.py)
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'statics'),
+)
+STATIC_URL = '/assets/'
+
+
+
+1) 서버 시작
+   ~~~shell
+   (venv) $ python manage.py runserver 0.0.0.0:9999
+   ~~~
+2) 브라우저 접근
+   - url http://localhost:9999로 접근
+   - admin 로그인은 http://localhost:9999/admin
+   - (admin/myPW)
+   - (quit server with: ^c)
