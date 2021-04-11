@@ -10,11 +10,14 @@
 		<div id="header">
 			<h1>MySite</h1>
 			<ul>
-				<li><a href="">로그인</a><li>
-				<li><a href="">회원가입</a><li>
-				<li><a href="">회원정보수정</a><li>
-				<li><a href="">로그아웃</a><li>
-				<li>님 안녕하세요 ^^;</li>
+				{% if request.session.authuser is None %}
+					<li><a href="/user/loginform">로그인</a><li>
+					<li><a href="/user/joinform">회원가입</a><li>
+				{% else %}
+					<li><a href="/user/updateform">회원정보수정</a><li>
+					<li><a href="/user/logout">로그아웃</a><li>
+					<li>{{ request.session.authuser.name }}님 안녕하세요 ^^;</li>
+				{% endif %}
 			</ul>
 		</div>
 		<div id="wrapper">

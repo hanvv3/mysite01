@@ -1,0 +1,33 @@
+{% extends '../base.html' %}
+
+{% block css_link %}
+<link href="/assets/css/board.css" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+			<div id="board">
+				<form class="board-form" method="post" action="/board/reply">
+					{% csrf_token %}
+					<input type="hidden" name="post_id" value="{{ request.GET.no }}">
+					<table class="tbl-ex">
+						<tr>
+							<th colspan="2">답글쓰기</th>
+						</tr>
+						<tr>
+							<td class="label">제목</td>
+							<td><input type="text" name="title" placeholder="답글 제목을 입력해 주세요."></td>
+						</tr>
+						<tr>
+							<td class="label">내용</td>
+							<td>
+								<textarea id="content" name="content" placeholder="룰루랄라 즐건 코딩~"></textarea>
+							</td>
+						</tr>
+					</table>
+					<div class="bottom">
+						<a href="/board/view?no={{ request.GET.no }}">취소</a>
+						<input type="submit" value="등록">
+					</div>
+				</form>				
+			</div>
+{% endblock %}

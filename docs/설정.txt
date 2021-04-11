@@ -9,8 +9,7 @@ mysite01 장고 프로젝트 만들기
 
 
 3. 장고 프로젝트 생성
-(venv) $ django-admin startproject django_practices
-
+(venv) $ django-admin startproject mysite01
 
 4. directory 정리(pycharm 프로젝트랑 장고 프로젝트를 일치시키기)
 
@@ -52,9 +51,9 @@ DatabaseWrapper.data_types['DateTimeField'] = 'datetime'
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
 
 
-10. python manage.py startapp main
+9. python manage.py startapp main
 
-11. CSS 적용 (static 파일: css, js, images) (settings.py)
+10. CSS 적용 (static 파일: css, js, images) (settings.py)
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'statics'),

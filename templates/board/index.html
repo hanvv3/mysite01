@@ -1,4 +1,4 @@
-{% extends '../base.html %}
+{% extends '../base.html' %}
 
 {% block css_link %}
 <link href="/assets/css/board.css" rel="stylesheet" type="text/css">
@@ -18,34 +18,42 @@
 						<th>조회수</th>
 						<th>작성일</th>
 						<th>&nbsp;</th>
-					</tr>				
-					<tr>
-						<td>3</td>
-						<td><a href="">세 번째 글입니다.</a></td>
-						<td>안대혁</td>
-						<td>3</td>
-						<td>2015-10-11 12:04:20</td>
-						<td><a href="" class="del">삭제</a></td>
 					</tr>
+					{% load mathfilters %}
+					{% for post in post_list %}
 					<tr>
-						<td>2</td>
-						<td><a href="">두 번째 글입니다.</a></td>
-						<td>안대혁</td>
-						<td>3</td>
-						<td>2015-10-02 12:04:12</td>
-						<td><a href="" class="del">삭제</a></td>
+						<td>{{ post_list | length | sub:forloop.counter | add:1 }}</td>
+						<td>
+							<a href="/board/view?no={{ post.ano }}" style="text-align:left; width:100px; display:block; padding-left:{{25 | mul:post.depth }}px">
+								{% if 0 < post.depth %}<img src="/assets/images/reply.png"/>{% endif %}{{ post.title }}
+							</a>
+						</td>
+						<td>{{ post.name }}</td>
+						<td>{{ post.hit }}</td>
+						<td style="width:115px">{{ post.regdate }}</td>
+						<td>{% if post.bno == request.session.authuser.no %}
+							<a href="/board/deleteform?no={{ post.ano }}" class="del">삭제</a>
+						</td>{% endif %}
 					</tr>
-					<tr>
-						<td>1</td>
-						<td><a href="">첫 번째 글입니다.</a></td>
-						<td>안대혁</td>
-						<td>3</td>
-						<td>2015-09-25 07:24:32</td>
-						<td><a href="" class="del">삭제</a></td>
-					</tr>
+					{% endfor %}
 				</table>
+
+				<!-- pager 추가 -->
+				<div class="pager">
+					<ul>
+						<li><a href="">◀</a></li>
+						<li><a href="">1</a></li>
+						<li class="selected">2</li>
+						<li><a href="">3</a></li>
+						<li>4</li>
+						<li>5</li>
+						<li><a href="">▶</a></li>
+					</ul>
+				</div>
+				<!-- pager 추가 -->
+
 				<div class="bottom">
-					<a href="" id="new-book">글쓰기</a>
+					<a href="/board/writeform" id="new-book">글쓰기</a>
 				</div>				
 			</div>
 {% endblock %}

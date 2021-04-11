@@ -1,4 +1,4 @@
-{% extends '../base.html %}
+{% extends '../base.html' %}
 
 {% block css_link %}
 <link href="/assets/css/guestbook.css" rel="stylesheet" type="text/css">
@@ -28,7 +28,7 @@
 						<table>
 						{% for guestbook in guestbook_list %}
 							<tr>
-								<td>[{{ guestbook_list | length | sub:forloop.counter | add:1}}]</td>
+								<td>[{{ guestbook_list | length | sub:forloop.counter | add:1 }}]</td>
 								<td>{{ guestbook.name }}</td>
 								<td>{{ guestbook.regdate }}</td>
 								<td><a href="/guestbook/deleteform?no={{guestbook.no}}">삭제</a></td>

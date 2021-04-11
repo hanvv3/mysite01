@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'main',
     'guestbook',
     'board',
+    'user',
     'mathfilters',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -113,11 +114,13 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Asia/Seoul'
 
+DATETIME_FORMAT = "Y-m-d H:i:s"
+
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -126,3 +129,9 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'statics'),
 )
 STATIC_URL = '/assets/'
+
+# session cookies(csrftoken) stored in memory
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+SESSION_SAVE_EVERY_REQUEST = True
+
