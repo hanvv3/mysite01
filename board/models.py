@@ -41,7 +41,7 @@ def insert_reply(title, contents, g_no, o_no, depth, user_no):
          where g_no = %s
            and o_no >= %s'''
         sql2 = "insert into board values(null, %s, %s, 0, now(), %s, %s, %s, %s)"
-        # sql순서를 반대로 하고 and에  and no != (select max(no))를 사용하면 버그인것 같다.
+        # sql순서를 반대로 하고 and에  and no != (select max(no))를 사용하면 recursive처럼 되는것 같다.
         cursor.execute(sql1, (g_no, o_no))
         cursor.execute(sql2, (title, contents, g_no, o_no, depth, user_no))
 
