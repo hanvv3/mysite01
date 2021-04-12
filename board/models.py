@@ -95,13 +95,13 @@ def listbyno(no):
         print(f'error: {e}')
 
 
-def deleteby_no_and_pw(no, password):
+def deleteby_no(no):
     try:
         db = conn()
         cursor = db.cursor()
 
-        sql = 'delete from board where no = %s and password = %s'
-        cursor.execute(sql, (no, password))
+        sql = 'delete from board where no = %s'
+        cursor.execute(sql, (no,))
 
         db.commit()
 
@@ -139,9 +139,10 @@ def update(ano, title, contents):
         db = conn()
         cursor = db.cursor()
 
+        # %s에 들어올 값은 이미 string이기 때문에 ""가 필요 없음.
         sql = '''
         update board
-           set title = %s, contents = %s            # %s에 들어올 값은 이미 string이기 때문에 ""가 필요 없음.
+           set title = %s, contents = %s
          where no = %s'''
         cursor.execute(sql, (title, contents, ano))
 

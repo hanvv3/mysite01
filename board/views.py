@@ -99,12 +99,13 @@ def deleteform(request):
 
     no = request.GET['no']
     result = models.listbyno(no)
-    if result['bno'] != authuser['no']:  # 비정상 로그인일 때.
+    if result['bno'] is not authuser['no']:  # 비정상 로그인일 때.
         return HttpResponseRedirect('/')
 
     return render(request, 'board/deleteform.html')
 
 
+# 이게 문제. result fail시 MultiValueDictKeyError 에러뜸.
 def delete(request):
     authuser = request.session.get('authuser')  # 로그인이 안된 상태에서의 접근인지 확인.
     if authuser is None:
@@ -118,9 +119,9 @@ def delete(request):
     password = request.POST['password']
     user_id = models.findby_no_and_pw(no, password)
     if user_id is None:
-        return HttpResponseRedirect('/board/deleteform?result=fail')
+        return HttpResponseRedirect(f'/board/deleteform?no={no}&result=fail')
 
-    models.deleteby_no_and_pw(no, password)
+    models.deleteby_no(no)
 
     return HttpResponseRedirect('/board')
 
