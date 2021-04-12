@@ -45,7 +45,7 @@ def view(request):
 def writeform(request):
     authuser = request.session.get('authuser')  # 로그인이 안된 상태에서의 접근인지 확인.
     if authuser is None:
-        return HttpResponseRedirect('/user/loginform?sendto=writeform')
+        return HttpResponseRedirect('/user/loginform?sendto=board/writeform')
 
     return render(request, 'board/writeform.html')
 
@@ -53,7 +53,7 @@ def writeform(request):
 def write(request):
     authuser = request.session.get('authuser')  # 로그인이 안된 상태에서의 접근인지 확인.
     if authuser is None:
-        return HttpResponseRedirect('/user/loginform?sendto=writeform')
+        return HttpResponseRedirect('/user/loginform?sendto=board/writeform')
 
     user_no = authuser['no']
     title = request.POST['title']
@@ -64,10 +64,10 @@ def write(request):
 
 def updateform(request):
     authuser = request.session.get('authuser')  # 로그인이 안된 상태에서의 접근인지 확인.
-    if authuser is None:
-        return HttpResponseRedirect('/user/loginform')
-
     no = request.GET['no']
+    if authuser is None:
+        return HttpResponseRedirect(f'/user/loginform?sendto=board/view?no={no}')
+
     result = models.listbyno(no)
     if result['bno'] != authuser['no']:  # 비정상 로그인일 때.
         return HttpResponseRedirect('/')
@@ -79,7 +79,7 @@ def updateform(request):
 def update(request):
     authuser = request.session.get('authuser')  # 로그인이 안된 상태에서의 접근인지 확인.
     if authuser is None:
-        return HttpResponseRedirect('/user/loginform')
+        return HttpResponseRedirect('/user/loginform?sendto=board/')
 
     ano = request.POST['post_id']
     result = models.listbyno(ano)
@@ -126,28 +126,29 @@ def delete(request):
     return HttpResponseRedirect('/board')
 
 
-
 def replyform(request):
     authuser = request.session.get('authuser')  # 로그인이 안된 상태에서의 접근인지 확인.
+    ano = request.GET['no']
     if authuser is None:
-        return HttpResponseRedirect('/user/loginform')
+        return HttpResponseRedirect(f'/user/loginform?sendto=board/view?no={ano}')
 
     return render(request, 'board/replyform.html')
 
 
 def reply(request):
     authuser = request.session.get('authuser')  # 로그인이 안된 상태에서의 접근인지 확인.
+    ano = request.POST['post_id']
     if authuser is None:
-        return HttpResponseRedirect('/user/loginform')
+        return HttpResponseRedirect(f'/user/loginform?sendto=board/view?no={ano}')
 
     user_no = authuser['no']        # 'no' = user_no
-    ano = request.POST['post_id']
     result = models.listbyno(ano)
     title = request.POST['title']
     contents = request.POST['content']
     g_no = result['g_no']
+    o_no = result['o_no'] + 1
     depth = result['depth'] + 1
-    models.insert_reply(title, contents, g_no, depth, user_no)
+    models.insert_reply(title, contents, g_no, o_no, depth, user_no)
     return HttpResponseRedirect('/board')
 
 

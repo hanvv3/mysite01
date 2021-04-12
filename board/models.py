@@ -26,17 +26,24 @@ def insert_new_post(title, contents, user_no):
         print(f'error: {e}')
 
 
-def insert_reply(title, contents, g_no, depth, user_no):
+def insert_reply(title, contents, g_no, o_no, depth, user_no):
     try:
         # 연결
         db = conn()
-
         # cursor 생성
         cursor = db.cursor()
 
         # SQL 실행 / now(), g_no = ifnull((select max(g_no) from board as a),0)+1
-        sql = "insert into board values(null, %s, %s, 0, now(), %s, (select max(o_no) from board as a)+1, %s, %s)"
-        cursor.execute(sql, (title, contents, g_no, depth, user_no))
+        # 계층형의 반대 답글순서는 이렇게 테스트 해보길: o_no = (select max(o_no) from board as a where g_no = %s)+1
+        sql1 = '''
+        update board 
+           set o_no = o_no + 1 
+         where g_no = %s
+           and o_no >= %s'''
+        sql2 = "insert into board values(null, %s, %s, 0, now(), %s, %s, %s, %s)"
+        # sql순서를 반대로 하고 and에  and no != (select max(no))를 사용하면 버그인것 같다.
+        cursor.execute(sql1, (g_no, o_no))
+        cursor.execute(sql2, (title, contents, g_no, o_no, depth, user_no))
 
         # commit (transaction종료, db내부 변경 사항을 확정)
         db.commit()

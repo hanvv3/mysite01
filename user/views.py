@@ -40,7 +40,7 @@ def login(request):
 
     # 예) 글쓰기에서 로그인 할 경우, 다시 글쓰기페이지로 보내줌
     if sendto is not '':
-        return HttpResponseRedirect(f'/board/{sendto}')
+        return HttpResponseRedirect(f'/{sendto}')
 
     return HttpResponseRedirect('/')
 
